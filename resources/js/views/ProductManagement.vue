@@ -1,52 +1,67 @@
 
 <template>
-  <section class="product-mgt container-fluid">
-    <h1>Product Management Section</h1>
-	<table class="container ">
-		<thead class=" ">
-		<tr >
-			<th><h5>ID</h5></th>
-			<th><h5>Image</h5></th>
-			<th><h5>Name</h5></th>
-			<th><h5>Description</h5></th>
-			<th><h5>Price</h5></th>
-			<th><h5>Action</h5></th>
-		</tr>
+    <!-- <div>
+		<DataTable :value="posts" responsiveLayout="scroll">
+            <Column v-for="col of columns" :field="col.field" :header="col.header" :key="col.field"></Column>
+        </DataTable>
+		
+    </div> -->
+	<h1 class="text-center text-dark my-5 p-2 container ">Product Management Section</h1>
+	<table class="table container">
+		<thead >
+			<tr >
+			<th class="py-3" scope="col">ID</th>
+			<th class="py-3" scope="col">IMAGE</th>
+			<th class="py-3" scope="col">NAME</th>
+			<th class="py-3" scope="col">DESCRIPTION</th>
+			<th class="py-3" scope="col">PRICE</th>
+			<th class="py-3" scope="col">ACTION</th>
+			</tr>
 		</thead>
 		<tbody>
-		<tr v-for="post in posts" :key="post.id">
-			<td>{{post.id}}</td>
-			<img class="w-25" :src="`../storage/images/${post.file_path.substring(14)}`">
+			<tr v-for="post in posts" :key="post.id">
+				<th scope="row">{{ post.id }}</th>
+				<td class="w-25">
+					<img 
+						:src="`../storage/images/${post.file_path.substring(14)}`"
+					>
+				</td>
+				<td>{{post.name}}</td>
+				<td>{{post.description}}</td>
+				<td>{{post.price}}</td>
 
-			<td>{{post.name}}</td>
+				<td class="" >
+					<span class="">
+						<router-link :to="{ name: 'EditProduct', params: {id:post.id} }">
+							<Button 
+								class="p-button-outlined px-0 py-0"
+								icon="pi pi-times">
+								Edit
+							</Button>
+						</router-link>
+					</span>
+					<span>
+						<ConfirmPopup></ConfirmPopup>
+						<ConfirmPopup group="demo">
+							<template #message="slotProps">
+								<div class="flex p-4">
+									<i :class="slotProps.message.icon" style="font-size: 1.5rem"></i>
+									<p class="pl-2">{{slotProps.message.message}}</p>
+								</div>
+							</template>
+						</ConfirmPopup>
+						<Toast />
+						<Button 
+							@click="confirm2($event,post.id)" 
+							icon="pi pi-trash" 
+							class="p-button-danger p-button-outlined px-0 py-0">
+						</Button>
+					</span>
+				</td>
 
-			<td class="desc w-50">{{post.description}}</td>
-			<td>{{post.price}}</td>
-			
-			<td class="d-flex gap-2">
-				<router-link :to="{ name: 'EditProduct', params: {id:post.id} }">
-					<Button class="p-button-outlined" >Edit</Button>
-				</router-link>
-				
-				<div>
-					<ConfirmPopup></ConfirmPopup>
-					<ConfirmPopup group="demo">
-						<template #message="slotProps">
-							<div class="flex p-4">
-								<i :class="slotProps.message.icon" style="font-size: 1.5rem"></i>
-								<p class="pl-2">{{slotProps.message.message}}</p>
-							</div>
-						</template>
-					</ConfirmPopup>
-					<Toast />
-					<Button @click="confirm2($event,post.id)" icon="pi pi-times" label="Delete" class="p-button-danger p-button-outlined"></Button>
-				</div>
-			</td>
-		</tr>
+			</tr>
 		</tbody>
 	</table>
-  </section>
-
 </template>
 <script setup>	
 
@@ -57,10 +72,25 @@ import Button from 'primevue/button';
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import Toast from 'primevue/toast';
-
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import ColumnGroup from 'primevue/columngroup';     //optional for column grouping
+import Row from 'primevue/row';                     //optional for row
+import Image from 'primevue/image';
 
 
 // name: "MainSection"
+const columns = ref([
+            {field: 'id', header: 'ID'},
+            {field: 'file_path',header: 'IMAGE'},
+			{field: 'name', header: 'NAME'},
+            {field: 'description', header: 'DESCRIPTION'},
+            {field: 'price', header: 'PRICE'},
+			
+            {field:"buttn", header: 'ACTION'}
+        ]);
+
+
 
 	const confirm = useConfirm();
 	const toast = useToast();
@@ -112,22 +142,13 @@ import Toast from 'primevue/toast';
 
 
 </script>
-<style>
-	.product-mgt {
-		margin-top:1rem;
+<style scoped>
+	h1 {
+		box-shadow: 1px 1px 5px 1px gray;
 	}
-	.product-mgt h1 {
-		color: rgba(0, 0, 0, .7);
-		background : #f1f1f1;
-		margin:1rem 4rem;
-		padding:1rem;
-	}
-	.product-mgt table {
-		margin:1rem 4rem;
-		padding:1rem;
-	}
-	table td {
-		margin-bottom: 1rem;
-	}
+	img {
+		width: 100px;
+		object-fit: cover;
+	 }
 
 </style>

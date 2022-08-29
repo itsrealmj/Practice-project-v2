@@ -18,6 +18,12 @@ import ConfirmPopup from 'primevue/confirmpopup';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import ColumnGroup from 'primevue/columngroup';     //optional for column grouping
+import Row from 'primevue/row';                     //optional for row
+import Image from 'primevue/image';
+import Menubar from 'primevue/menubar';
 
 
 const app = createApp(App)
@@ -37,6 +43,12 @@ app.component('Rating', Rating);
 app.component('ProgressSpinner', ProgressSpinner);
 app.component('ConfirmPopup', ConfirmPopup);
 app.component('Toast', Toast);
+app.component('DataTable', DataTable);
+app.component('Column', Column);
+app.component('ColumnGroup', ColumnGroup);
+app.component('Row', Row);
+app.component('Image', Image);
+app.component('Menubar', Menubar);
 
 
 

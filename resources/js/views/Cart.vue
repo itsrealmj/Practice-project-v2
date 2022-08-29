@@ -1,58 +1,75 @@
 <template>
 <!-- <Message class="w-50 m-auto fixed-top" severity="success" v-if="showMessage">Successfully deleted</Message> -->
 <div class="p-5 d-flex justify-content-around">
-    <div class="m-2">
-    <div class="card-img d-flex border-bottom pb-3 mb-3" v-for="cart in carts " :key="cart.id">
-      <div class=" d-flex justify-content-between gap-3"> 
-        <div class="card-details">
-          <img class=" product-img" :src="`../storage/images/${cart.product.file_path.substring(14)}`">
-          <div class="m-3">
-            <div>
-                <h5 class="mt-3">{{ cart.id }}</h5>
-                <br>
+  <div class="m-2">
+      <div class="card-img d-flex border-bottom pb-3 mb-3" v-for="cart in carts " :key="cart.id">
+        <div class=" d-flex justify-content-between gap-3"> 
+          <div class="card-details">
+            <img 
+              class=" product-img" 
+              :src="`../storage/images/${cart.product.file_path.substring(14)}`"
+            >
+            <div class="m-3">
+              <div >
+                  <strong> {{ cart.product.name}} </strong> 
 
-                <div class="">
-                    <h6>{{ cart.product_id}}</h6>
-                    <span >Quantity : 
+                  <div>
+                      <span ><strong>Quantity : </strong> 
 
-                      <span class="p-buttonset ">
-                        <Button @click="changeQty(cart.id, operation = 'minus')" label="" icon="pi pi-minus" class="p-0 m-0" />
-                        <Button :disabled="true" :v-model="cart.qty" class="p-0 m-0 qty"> {{cart.qty}}</Button>
-                        <Button @click="changeQty(cart.id, operation = 'add')" label="" icon="pi pi-plus" class="p-0 m-0"/>
+                        <span class="p-buttonset ">
+                          <Button  
+                            @click="changeQty(cart.id, operation = 'minus')" 
+                            icon="pi pi-minus" 
+                            class="p-0 m-0" />
+
+                          <Button 
+                            :disabled="true" 
+                            class="p-0 px-3 m-0"> 
+                            {{cart.qty}}
+                          </Button>
+
+                          <Button
+                            @click="changeQty(cart.id, operation = 'add')" 
+                            icon="pi pi-plus" 
+                            class="p-0 m-0"/>
+                        </span>
                       </span>
+                  </div>
 
-                    </span>
-                </div>
-                <h5>$ {{ cart.product.price }}</h5>
-            </div>
-            <div>
-                <button class="btn btn-primary d-flex align-items-center mt-3"> 
-                    <span class="material-symbols-outlined">favorite</span>
-                    <span class="">Save for later</span>
-                </button>
+                  <h5 >$ {{ cart.product.price }}</h5>
+                  {{ cart.product.description}}
+              </div>
+              <div>
+                  <button class="btn btn-primary d-flex align-items-center mt-3"> 
+                      <span class="material-symbols-outlined">favorite</span>
+                      <span class="">Save for later</span>
+                  </button>
+              </div>
             </div>
           </div>
+
+          <div class="closed-btn">
+              <ConfirmPopup></ConfirmPopup>
+              <ConfirmPopup group="demo">
+                <template #message="slotProps">
+                  <div class="flex p-4">
+                    <i :class="slotProps.message.icon" style="font-size: 1.5rem"></i>
+                    <p class="pl-2">{{slotProps.message.message}}</p>
+                  </div>
+                </template>
+              </ConfirmPopup>
+              <Toast />
+              <Button 
+                @click="confirm2($event,cart.id )" 
+                icon="pi pi-times" 
+                class="p-button-danger p-button-outlined px-0 py-0">
+              </Button>
+          </div>
         </div>
-        <div class="closed-btn">
-            <ConfirmPopup></ConfirmPopup>
-            <ConfirmPopup group="demo">
-              <template #message="slotProps">
-                <div class="flex p-4">
-                  <i :class="slotProps.message.icon" style="font-size: 1.5rem"></i>
-                  <p class="pl-2">{{slotProps.message.message}}</p>
-                </div>
-              </template>
-            </ConfirmPopup>
-            <Toast />
-            <Button 
-              @click="confirm2($event,cart.id )" 
-              icon="pi pi-times" 
-              class="p-button-danger p-button-outlined px-0 py-0">
-            </Button>
-        </div>
-      </div>
-  </div>
     </div>
+  </div>
+
+
     <!-- left payment -->
     <div class="m-2">
         <!-- start here -->
@@ -61,7 +78,7 @@
 
         <div class="">
             <div class="d-flex justify-content-between" >
-                <strong>Sub-total</strong><strong>{{ }}</strong>
+                <strong>Sub-total</strong><strong>{{  }}</strong>
             </div>
             <div class="d-flex justify-content-between ">
                 <strong>Delivery</strong><strong>$ 2</strong>
@@ -106,14 +123,10 @@ import Toast from 'primevue/toast';
 
 
 
-async function changeQty (id, operation) {
-  const data = await axiosAuth.post(`api/cart`, { id:id, operation: operation})
-  displayedProducts()
-}
-
-
-
-// name: "MainSection
+  async function changeQty (id, operation) {
+    const data = await axiosAuth.post(`api/cart`, { id:id, operation: operation})
+    displayedProducts()
+  }
 
 	const confirm = useConfirm();
 	const toast = useToast();
@@ -140,31 +153,14 @@ async function changeQty (id, operation) {
 		displayedProducts()
 	}
 
-    // DELETED SINGLE ITEM IN CART
-    // let showMessage = ref(false)
-    // async function deleteCart(id) {
-    //   if(confirm('delete ? ')){
-    //     const deleteItem = await axios.post(`/api/deletecart`, {id:id})
-
-    //     if(deleteItem.status === 200) {
-    //       showMessage.value = true
-    //         setTimeout(() => {
-    //           showMessage.value = false
-    //         },2000)
-    //         const cartDetails = await window.axios.get(`http://localhost:8000/api/cart`)
-    //         carts.value = cartDetails.data
-    //     }
-    //   }
-    // }
-
 
     // ALL PPRODUCT IN CART DISPLAY
     const carts = ref([])
-
+    
     const displayedProducts = async () => {
-        const cartDetails = await axiosAuth.get(`http://localhost:8000/api/cart`)
+        const cartDetails = await axiosAuth.get(`/api/cart`)
         carts.value = cartDetails.data
-
+        
     };
     displayedProducts()
 
@@ -186,9 +182,7 @@ async function changeQty (id, operation) {
     width: 700px;
   }
    .card-img .card-details .product-img {
-      width: 250px;
+      width: 150px;
     }
-    .card-img .card-details .qty {
-      padding: 0 .3rem;
-    }
+    
 </style>

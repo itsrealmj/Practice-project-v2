@@ -11,7 +11,7 @@
     
     <div class="mb-3">
       <label class="form-label">Upload photo</label>
-      <input type="file" class="form-control" :v-model="post.file_path.substring(14)" name="image">
+      <input type="file" class="form-control" :v-model="post.file_path" name="image">
     </div>
     <div class="mb-3">
       <label class="form-label">Product Price</label>
@@ -36,7 +36,8 @@ export default {
     props: ['id'],
     // props.id from productsection params which give the ID of the triggered button EDIT
     setup(props) {
-		const post = ref(null)
+      
+		const post = ref()
 		const error = ref(null) 
 
 		const load = async () => {
@@ -44,13 +45,13 @@ export default {
 				const datas = await axiosAuth.get(`/api/manage/`)
 
 				const dataItems = await datas.data
-        console.log(dataItems)
         // this will filter only one item which has the same value as the props.id 
         // and the single data from API endpoint
         dataItems.filter(item => {
           if(item.id == props.id) {
             // item will assign to post.value to store single item from DB
             post.value = item
+            console.log(post.value)
           }
         })
 			}

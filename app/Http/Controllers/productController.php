@@ -22,11 +22,10 @@ class productController extends Controller
     
     function addProduct(Request $request)
     {   
-        // $imageName = $request->file('image')->getClientOriginalName();
 
         $product = new product;
         $product->name = $request->name;
-        // $product->file_path = $request->file('image')->storeAs('public/images', $imageName);
+        $product->file_path = $request->file('image')->storeAs('public/images', $imageName);
         $product->price = $request->price;
         $product->description = $request->description;
         $result = $product->save();

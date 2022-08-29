@@ -33,6 +33,8 @@
 
 </template>
 <script setup>
+import Menubar from 'primevue/menubar';
+
 import { onMounted, ref } from "vue";
 
 	let logOutBtn = ref(false)
