@@ -113,7 +113,6 @@ const columns = ref([
 
 	async function deleteProduct(id) {
 		const data = await axiosAuth.post(`/api/delete/`, {id: id})
-		console.log(data.status)
 		loadAllProduct()
 	} 
 
@@ -129,6 +128,7 @@ const columns = ref([
 		catch(err) {
 			error.value = err.message
 		}
+		console.log(import.meta.env.VITE_APP_URL)
 	}
 
 	loadAllProduct()

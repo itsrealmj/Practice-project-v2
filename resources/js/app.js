@@ -24,6 +24,7 @@ import ColumnGroup from 'primevue/columngroup';     //optional for column groupi
 import Row from 'primevue/row';                     //optional for row
 import Image from 'primevue/image';
 import Menubar from 'primevue/menubar';
+import Checkbox from 'primevue/checkbox';
 
 
 const app = createApp(App)
@@ -49,6 +50,7 @@ app.component('ColumnGroup', ColumnGroup);
 app.component('Row', Row);
 app.component('Image', Image);
 app.component('Menubar', Menubar);
+app.component('Checkbox', Checkbox);
 
 
 

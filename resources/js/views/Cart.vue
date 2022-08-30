@@ -3,50 +3,53 @@
 <div class="p-5 d-flex justify-content-around">
   <div class="m-2">
       <div class="card-img d-flex border-bottom pb-3 mb-3" v-for="cart in carts " :key="cart.id">
-        <div class=" d-flex justify-content-between gap-3"> 
-          <div class="card-details">
-            <img 
-              class=" product-img" 
-              :src="`../storage/images/${cart.product.file_path.substring(14)}`"
-            >
-            <div class="m-3">
-              <div >
-                  <strong> {{ cart.product.name}} </strong> 
+        <div class=" d-flex justify-content-between gap-3">
+          <form action="/api/order/">
+            <div class="card-details">
+              <input type="checkbox" style="width:35px" class="mx-2" name="vehicle1" :value="cart.product.price">
+                <img 
+                  class=" product-img" 
+                  :src="`../storage/images/${cart.product.file_path.substring(14)}`"
+                >
+                <div class="m-3">
+                  <div >
+                      <strong> {{ cart.product.name}} </strong> 
 
-                  <div>
-                      <span ><strong>Quantity : </strong> 
+                      <div>
+                          <span ><strong>Quantity : </strong> 
 
-                        <span class="p-buttonset ">
-                          <Button  
-                            @click="changeQty(cart.id, operation = 'minus')" 
-                            icon="pi pi-minus" 
-                            class="p-0 m-0" />
+                            <span class="p-buttonset ">
+                              <Button  
+                                @click="changeQty(cart.id, operation = 'minus')" 
+                                icon="pi pi-minus" 
+                                class="p-0 m-0" />
 
-                          <Button 
-                            :disabled="true" 
-                            class="p-0 px-3 m-0"> 
-                            {{cart.qty}}
-                          </Button>
+                              <Button 
+                                :disabled="true" 
+                                class="p-0 px-3 m-0"> 
+                                {{cart.qty}}
+                              </Button>
 
-                          <Button
-                            @click="changeQty(cart.id, operation = 'add')" 
-                            icon="pi pi-plus" 
-                            class="p-0 m-0"/>
-                        </span>
-                      </span>
+                              <Button
+                                @click="changeQty(cart.id, operation = 'add')" 
+                                icon="pi pi-plus" 
+                                class="p-0 m-0"/>
+                            </span>
+                          </span>
+                      </div>
+
+                      <h5 >$ {{ cart.product.price }}</h5>
+                      {{ cart.product.description}}
                   </div>
-
-                  <h5 >$ {{ cart.product.price }}</h5>
-                  {{ cart.product.description}}
-              </div>
-              <div>
-                  <button class="btn btn-primary d-flex align-items-center mt-3"> 
-                      <span class="material-symbols-outlined">favorite</span>
-                      <span class="">Save for later</span>
-                  </button>
-              </div>
-            </div>
+                  <div>
+                        <!-- <Button class="px-2 py-0 p-button-primary" label="fill">  
+                        </Button> -->
+                          
+                  </div>
+                </div>
+            
           </div>
+          </form>
 
           <div class="closed-btn">
               <ConfirmPopup></ConfirmPopup>
@@ -120,14 +123,18 @@ import Button from 'primevue/button';
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 import Toast from 'primevue/toast';
+import Checkbox from 'primevue/checkbox';
 
 
+async function order () {
+    const data = await axiosAuth.post(`api/order`)
+    console.log(data)
+  }
 
   async function changeQty (id, operation) {
     const data = await axiosAuth.post(`api/cart`, { id:id, operation: operation})
     displayedProducts()
   }
-
 	const confirm = useConfirm();
 	const toast = useToast();
 
